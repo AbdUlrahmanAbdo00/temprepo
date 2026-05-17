@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\GenerateOrderSummaryJob;
 use App\Services\CheckoutService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,6 +36,9 @@ class OrderController extends Controller
     {
         try {
             $order = $this->checkoutService->checkout($request->user());
+
+            // Dispatch asynchronous job to generate order summary
+            dispatch(new GenerateOrderSummaryJob($order));
 
             return response()->json([
                 'message' => 'Checkout completed.',
