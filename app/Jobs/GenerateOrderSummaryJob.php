@@ -30,7 +30,10 @@ class GenerateOrderSummaryJob implements ShouldQueue
      */
     public function __construct(
         protected Order $order
-    ) {}
+    ) {
+        $this->onConnection('database');
+        $this->onQueue('orders');
+    }
 
     /**
      * Execute the job.

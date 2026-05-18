@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ProcessOrderJob;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -67,6 +68,15 @@ class CheckoutService
             'order_id' => $order->id,
             'total_price' => $order->total_price,
         ]);
+
+        try {
+            ProcessOrderJob::dispatch($order);
+        } catch (\Throwable $throwable) {
+            Log::error('Failed to dispatch ProcessOrderJob', [
+                'order_id' => $order->id,
+                'error' => $throwable->getMessage(),
+            ]);
+        }
 
         return $order->load('items.product');
     }

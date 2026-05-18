@@ -8,6 +8,7 @@ use App\Services\CheckoutService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use RuntimeException;
+use Throwable;
 
 /**
  * @OA\Tag(
@@ -37,8 +38,11 @@ class OrderController extends Controller
         try {
             $order = $this->checkoutService->checkout($request->user());
 
-            // Dispatch asynchronous job to generate order summary
-            dispatch(new GenerateOrderSummaryJob($order));
+            try {
+                dispatch(new GenerateOrderSummaryJob($order));
+            } catch (Throwable $throwable) {
+                report($throwable);
+            }
 
             return response()->json([
                 'message' => 'Checkout completed.',

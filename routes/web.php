@@ -45,3 +45,22 @@ Route::get('/health', function () {
         'timestamp' => now()->toIso8601String(),
     ]);
 });
+
+Route::get('/server-info', function () {
+    return response()->json([
+        'app' => config('app.name'),
+        'environment' => config('app.env'),
+        'php_sapi' => php_sapi_name(),
+        'process_id' => function_exists('getmypid') ? getmypid() : null,
+        'server_software' => request()->server('SERVER_SOFTWARE'),
+        'server_name' => request()->server('SERVER_NAME'),
+        'server_port' => request()->server('SERVER_PORT'),
+        'host' => request()->getHost(),
+        'scheme' => request()->getScheme(),
+        'x_forwarded_for' => request()->header('X-Forwarded-For'),
+        'x_forwarded_host' => request()->header('X-Forwarded-Host'),
+        'x_forwarded_port' => request()->header('X-Forwarded-Port'),
+        'x_forwarded_proto' => request()->header('X-Forwarded-Proto'),
+        'timestamp' => now()->toIso8601String(),
+    ]);
+});

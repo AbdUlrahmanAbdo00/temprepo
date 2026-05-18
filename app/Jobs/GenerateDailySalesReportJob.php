@@ -25,10 +25,20 @@ class GenerateDailySalesReportJob implements ShouldQueue
      */
     public int $backoff = 30;
 
+    private bool $useChunking;
+
+    private int $chunkSize;
+
     /**
      * Create a new job instance.
      */
-    public function __construct() {}
+    public function __construct(bool $useChunking = true, int $chunkSize = 100)
+    {
+        $this->onConnection('database');
+        $this->onQueue('reports');
+        $this->useChunking = $useChunking;
+        $this->chunkSize = max(1, $chunkSize);
+    }
 
     /**
      * Execute the job.
@@ -67,6 +77,8 @@ class GenerateDailySalesReportJob implements ShouldQueue
         $totalSales = Order::whereBetween('created_at', [$today, $tomorrow])->sum('total_price');
         $averageOrderValue = $totalOrders > 0 ? $totalSales / $totalOrders : 0;
 
+        Log::info("Starting Daily Sales Report generation. Total orders to process: {$totalOrders}");
+
         $report = "===============================================\n";
         $report .= "DAILY SALES REPORT\n";
         $report .= "Date: " . now()->format('Y-m-d') . "\n";
@@ -79,16 +91,21 @@ class GenerateDailySalesReportJob implements ShouldQueue
         $report .= "Average Order Value: \$" . number_format($averageOrderValue, 2) . "\n";
         $report .= "===============================================\n\n";
 
-        $report .= "DETAILED ORDERS (Processed in Batches of 100):\n";
+        $processingMode = $this->useChunking ? "Batches of {$this->chunkSize}" : 'Single Full Read';
+        $report .= "DETAILED ORDERS (Processed in {$processingMode}):\n";
         $report .= "-----------------------------------------------\n";
 
-        // Process orders in chunks of 100 (batch processing)
         $chunkNumber = 0;
-        Order::whereBetween('created_at', [$today, $tomorrow])
+        $query = Order::whereBetween('created_at', [$today, $tomorrow])
             ->with('user', 'items.product')
-            ->orderBy('created_at', 'desc')
-            ->chunk(100, function ($orders) use (&$report, &$chunkNumber) {
+            ->orderBy('created_at', 'desc');
+
+        if ($this->useChunking) {
+            $query->chunk($this->chunkSize, function ($orders) use (&$report, &$chunkNumber) {
                 $chunkNumber++;
+
+                Log::info("Processing Sales Report Batch - Chunk #{$chunkNumber} | Orders in this batch: " . $orders->count());
+
                 $report .= "\nBatch #{$chunkNumber}:\n";
 
                 foreach ($orders as $order) {
@@ -99,6 +116,24 @@ class GenerateDailySalesReportJob implements ShouldQueue
                     $report .= "Status: {$order->status}\n";
                 }
             });
+
+            return $report;
+        }
+
+        $orders = $query->get();
+        $chunkNumber = 1;
+
+        Log::info("Processing Sales Report Batch - Full Read | Orders in this batch: " . $orders->count());
+
+        $report .= "\nBatch #{$chunkNumber} (Full Read):\n";
+
+        foreach ($orders as $order) {
+            $report .= "Order ID: {$order->id} | ";
+            $report .= "Customer: {$order->user->name} | ";
+            $report .= "Total: \${$order->total_price} | ";
+            $report .= "Items: {$order->items->count()} | ";
+            $report .= "Status: {$order->status}\n";
+        }
 
         $report .= "\n===============================================\n";
         $report .= "End of Report\n";
