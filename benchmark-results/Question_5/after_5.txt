@@ -1,0 +1,147 @@
+PS C:\projects\new\MY_STORE\my-ecommerce-app> k6 run scripts/k6_load_balance_demo.js
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: scripts/k6_load_balance_demo.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 20 max VUs, 40s max duration (incl. graceful stop):
+              * default: 20 looping VUs for 10s (gracefulStop: 30s)
+
+INFO[0000] [VU 16 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0000] [VU 17 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0001] [VU 12 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0001] [VU 11 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0001] [VU 4 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0001] [VU 7 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0001] [VU 8 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0001] [VU 18 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0001] [VU 9 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0001] [VU 2 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0001] [VU 3 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0001] [VU 5 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0001] [VU 19 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 10 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 1 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 6 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0002] [VU 20 | ITER 0] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 14 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0002] [VU 16 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 4 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 8 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 12 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 15 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0002] [VU 9 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 3 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 19 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 1 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0002] [VU 13 | ITER 0] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0003] [VU 20 | ITER 1] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0003] [VU 16 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0003] [VU 17 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0003] [VU 8 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0003] [VU 11 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0003] [VU 3 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+ERRO[0003] GoError: cannot parse json due to an error at line 1, character 1 , error: invalid character '<' looking for beginning of value
+default at reflect.methodValueCall (native)
+        at default (file:///C:/projects/new/MY_STORE/my-ecommerce-app/scripts/k6_load_balance_demo.js:42:32(33))  executor=constant-vus scenario=default source=stacktrace
+INFO[0003] [VU 7 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0003] [VU 1 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0003] [VU 20 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0003] [VU 17 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0003] [VU 18 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0004] [VU 3 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0004] [VU 2 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0004] [VU 15 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0004] [VU 1 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0004] [VU 5 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0004] [VU 17 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0004] [VU 10 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0004] [VU 3 | ITER 4] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0004] [VU 15 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0004] [VU 6 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0004] [VU 5 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0004] [VU 14 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+ERRO[0005] GoError: cannot parse json due to an error at line 1, character 1 , error: invalid character '<' looking for beginning of value
+default at reflect.methodValueCall (native)
+        at default (file:///C:/projects/new/MY_STORE/my-ecommerce-app/scripts/k6_load_balance_demo.js:42:32(33))  executor=constant-vus scenario=default source=stacktrace
+INFO[0005] [VU 15 | ITER 4] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0005] [VU 4 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0005] [VU 5 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0005] [VU 12 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0005] [VU 9 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0005] [VU 4 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+ERRO[0006] GoError: cannot parse json due to an error at line 1, character 1 , error: invalid character '<' looking for beginning of value
+default at reflect.methodValueCall (native)
+        at default (file:///C:/projects/new/MY_STORE/my-ecommerce-app/scripts/k6_load_balance_demo.js:42:32(33))  executor=constant-vus scenario=default source=stacktrace
+INFO[0006] [VU 19 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0006] [VU 12 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0006] [VU 13 | ITER 1] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0006] [VU 9 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0006] [VU 16 | ITER 3] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+ERRO[0006] GoError: cannot parse json due to an error at line 1, character 1 , error: invalid character '<' looking for beginning of value
+default at reflect.methodValueCall (native)
+        at default (file:///C:/projects/new/MY_STORE/my-ecommerce-app/scripts/k6_load_balance_demo.js:42:32(33))  executor=constant-vus scenario=default source=stacktrace
+INFO[0006] [VU 8 | ITER 3] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0007] [VU 13 | ITER 2] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0007] [VU 11 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0007] [VU 19 | ITER 4] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0007] [VU 7 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0007] [VU 8 | ITER 4] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0007] [VU 20 | ITER 3] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0007] [VU 11 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0007] [VU 18 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0007] [VU 7 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0008] [VU 20 | ITER 4] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0008] [VU 2 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0008] [VU 18 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0008] [VU 1 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0008] [VU 17 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0008] [VU 20 | ITER 5] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0009] [VU 3 | ITER 5] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0009] [VU 18 | ITER 4] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0009] [VU 6 | ITER 2] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0009] [VU 17 | ITER 5] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0009] [VU 10 | ITER 3] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0009] [VU 3 | ITER 6] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0009] [VU 15 | ITER 5] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0009] [VU 6 | ITER 3] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0009] [VU 5 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0009] [VU 10 | ITER 4] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0010] [VU 14 | ITER 3] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0010] [VU 15 | ITER 6] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0010] [VU 4 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0010] [VU 5 | ITER 5] APACHE | sapi=apache2handler | pid=8556 | port=80  source=console
+INFO[0010] [VU 12 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0010] [VU 9 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0010] [VU 16 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0011] [VU 13 | ITER 3] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0011] [VU 19 | ITER 5] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0011] [VU 8 | ITER 5] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0011] [VU 11 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0011] [VU 7 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0012] [VU 2 | ITER 3] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0012] [VU 1 | ITER 5] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0012] [VU 20 | ITER 6] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0012] [VU 18 | ITER 5] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0012] [VU 17 | ITER 6] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0013] [VU 3 | ITER 7] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+INFO[0013] [VU 6 | ITER 4] ARTISAN | sapi=cli-server | pid=9512 | port=8080  source=console
+
+================ LOAD BALANCING SUMMARY ================
+Requests: undefined
+Apache hits: 0
+Artisan hits: 0
+Failed requests: 0
+========================================================
+
+running (13.4s), 00/20 VUs, 111 complete and 0 interrupted iterations
+default ✓ [======================================] 20 VUs  10s
+ERRO[0016] thresholds on metrics 'http_req_duration, http_req_failed' have been crossed 
+PS C:\projects\new\MY_STORE\my-ecommerce-app> 

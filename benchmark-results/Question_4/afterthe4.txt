@@ -1,0 +1,306 @@
+PS C:\projects\new\MY_STORE\my-ecommerce-app> php scripts/batch_processing_demo.php 5000 100
+
+╔════════════════════════════════════════════════════════════╗
+║  BATCH PROCESSING REQUIREMENT 4 - DOCUMENTATION TEST      ║
+╠════════════════════════════════════════════════════════════╣
+║ 📋 Test Parameters:                                        ║
+║    Orders to Generate: 5000                             ║
+║    Chunk Size: 100                                       ║
+║    Expected Chunks: 50                                    ║
+╚════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════
+PHASE 1: BASELINE RESOURCE SNAPSHOT
+═══════════════════════════════════════════════════════════
+
+╔════════════════════════════════════════════════════════════╗
+║ Baseline Resources (Before Data Generation)               ║
+╠════════════════════════════════════════════════════════════╣
+║ 🔴 PHP (Laravel)                                           ║
+║    Status: Running                                         ║
+║    CPU: 0%                                                ║
+║    RAM: 51.12 MB                                        ║
+║    Processes: 3                                            ║
+║                                                            ║
+║ 🟢 MySQL (Database)                                       ║
+║    Status: Running                                         ║
+║    CPU: 0%                                                ║
+║    RAM: 11.14 MB                                        ║
+║                                                            ║
+╠════════════════════════════════════════════════════════════╣
+║ 📊 TOTAL RESOURCES                                         ║
+║    CPU Total: 0%                                           ║
+║    RAM Total: 62.26 MB                                     ║
+║                                                            ║
+║    Status: ✅ NORMAL                                      ║
+║    Time: 2026-05-18 13:55:36                               ║
+╚════════════════════════════════════════════════════════════╝
+
+🧹 Clearing old log entries...
+
+═══════════════════════════════════════════════════════════
+PHASE 2: DATA GENERATION USING FACTORY
+═══════════════════════════════════════════════════════════
+⏱️  Starting data generation at 2026-05-18 13:55:40
+📦 Creating 5000 orders with products and items...
+   ✓ Created 500 users
+   ✓ Created 50 products
+   📝 Generated 100 orders...
+   📝 Generated 200 orders...
+   📝 Generated 300 orders...
+   📝 Generated 400 orders...
+   📝 Generated 500 orders...
+   📝 Generated 600 orders...
+   📝 Generated 700 orders...
+   📝 Generated 800 orders...
+   📝 Generated 900 orders...
+   📝 Generated 1000 orders...
+   📝 Generated 1100 orders...
+   📝 Generated 1200 orders...
+   📝 Generated 1300 orders...
+   📝 Generated 1400 orders...
+   📝 Generated 1500 orders...
+   📝 Generated 1600 orders...
+   📝 Generated 1700 orders...
+   📝 Generated 1800 orders...
+   📝 Generated 1900 orders...
+   📝 Generated 2000 orders...
+   📝 Generated 2100 orders...
+   📝 Generated 2200 orders...
+   📝 Generated 2300 orders...
+   📝 Generated 2400 orders...
+   📝 Generated 2500 orders...
+   📝 Generated 2600 orders...
+   📝 Generated 2700 orders...
+   📝 Generated 2800 orders...
+   📝 Generated 2900 orders...
+   📝 Generated 3000 orders...
+   📝 Generated 3100 orders...
+   📝 Generated 3200 orders...
+   📝 Generated 3300 orders...
+   📝 Generated 3400 orders...
+   📝 Generated 3500 orders...
+   📝 Generated 3600 orders...
+   📝 Generated 3700 orders...
+   📝 Generated 3800 orders...
+   📝 Generated 3900 orders...
+   📝 Generated 4000 orders...
+   📝 Generated 4100 orders...
+   📝 Generated 4200 orders...
+   📝 Generated 4300 orders...
+   📝 Generated 4400 orders...
+   📝 Generated 4500 orders...
+   📝 Generated 4600 orders...
+   📝 Generated 4700 orders...
+   📝 Generated 4800 orders...
+   📝 Generated 4900 orders...
+   📝 Generated 5000 orders...
+
+✅ Data generation completed in 70.748163938522s
+   📊 Orders in database: 5500
+
+╔════════════════════════════════════════════════════════════╗
+║ Resources After Data Generation                           ║
+╠════════════════════════════════════════════════════════════╣
+║ 🔴 PHP (Laravel)                                           ║
+║    Status: Running                                         ║
+║    CPU: 2.02%                                             ║
+║    RAM: 49.35 MB                                        ║
+║    Processes: 3                                            ║
+║                                                            ║
+║ 🟢 MySQL (Database)                                       ║
+║    Status: Running                                         ║
+║    CPU: 4.76%                                             ║
+║    RAM: 23.37 MB                                        ║
+║                                                            ║
+╠════════════════════════════════════════════════════════════╣
+║ 📊 TOTAL RESOURCES                                         ║
+║    CPU Total: 6.78%                                        ║
+║    RAM Total: 72.72 MB                                     ║
+║                                                            ║
+║    Status: ✅ NORMAL                                      ║
+║    Time: 2026-05-18 13:56:56                               ║
+╚════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════
+PHASE 3: BATCH JOB EXECUTION (WITH CHUNKING LOGS)
+═══════════════════════════════════════════════════════════
+⏱️  Starting batch job execution at 2026-05-18 13:57:01
+🔄 Running GenerateDailySalesReportJob with 100-size chunks...
+
+
+✅ Batch job completed in 2.262393951416s
+
+╔════════════════════════════════════════════════════════════╗
+║ Resources After Batch Job                                 ║
+╠════════════════════════════════════════════════════════════╣
+║ 🔴 PHP (Laravel)                                           ║
+║    Status: Running                                         ║
+║    CPU: 1.44%                                             ║
+║    RAM: 52.98 MB                                        ║
+║    Processes: 3                                            ║
+║                                                            ║
+║ 🟢 MySQL (Database)                                       ║
+║    Status: Running                                         ║
+║    CPU: 1.02%                                             ║
+║    RAM: 25.68 MB                                        ║
+║                                                            ║
+╠════════════════════════════════════════════════════════════╣
+║ 📊 TOTAL RESOURCES                                         ║
+║    CPU Total: 2.46%                                        ║
+║    RAM Total: 78.66 MB                                     ║
+║                                                            ║
+║    Status: ✅ NORMAL                                      ║
+║    Time: 2026-05-18 13:57:09                               ║
+╚════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════
+PHASE 4: LOG ANALYSIS - CHUNKING VERIFICATION
+═══════════════════════════════════════════════════════════
+📂 Analyzing logs for chunk processing evidence...
+
+⚠️  No chunking logs found. Check storage/logs/laravel.log
+
+═══════════════════════════════════════════════════════════
+PHASE 5: REPORT VERIFICATION
+═══════════════════════════════════════════════════════════
+✅ Report file created successfully:
+   📄 Path: app/reports/sales_report_2026-05-18.txt
+   📊 File size: 497.09 KB
+
+📋 Report Preview (first 30 lines):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ===============================================
+   DAILY SALES REPORT
+   Date: 2026-05-18
+   Generated: 2026-05-18 13:57:01
+   ===============================================
+   
+   SUMMARY STATISTICS:
+   Total Orders: 5500
+   Total Sales: $13821882.00
+   Average Order Value: $2,513.07
+   ===============================================
+   
+   DETAILED ORDERS (Processed in Batches of 100):
+   -----------------------------------------------
+   
+   Batch #1:
+   Order ID: 5619 | Customer: Sarai Goldner | Total: $1033.00 | Items: 1 | Status: completed
+   Order ID: 5559 | Customer: Sharon Hansen | Total: $341.00 | Items: 1 | Status: completed
+   Order ID: 5560 | Customer: Dr. Lauretta Predovic V | Total: $4058.00 | Items: 1 | Status: completed
+   Order ID: 5561 | Customer: Prof. Raul Bednar | Total: $3830.00 | Items: 1 | Status: completed
+   Order ID: 5562 | Customer: Cassandra Lehner MD | Total: $1530.00 | Items: 1 | Status: completed
+   Order ID: 5563 | Customer: Dr. Brannon Cole | Total: $1852.00 | Items: 1 | Status: completed
+   Order ID: 5564 | Customer: Ward Eichmann | Total: $2410.00 | Items: 1 | Status: completed
+   Order ID: 5565 | Customer: Lauriane Kessler | Total: $960.00 | Items: 1 | Status: completed
+   Order ID: 5566 | Customer: Dr. Sonya Quigley | Total: $4536.00 | Items: 1 | Status: completed
+   Order ID: 5567 | Customer: Peter Abshire DVM | Total: $173.00 | Items: 1 | Status: completed
+   Order ID: 5568 | Customer: Ms. Else Bradtke II | Total: $1799.00 | Items: 1 | Status: completed
+   Order ID: 5569 | Customer: Keyshawn Cummerata | Total: $1413.00 | Items: 1 | Status: completed
+   Order ID: 5570 | Customer: Prof. Maybell Wiza | Total: $4343.00 | Items: 1 | Status: completed
+   Order ID: 5571 | Customer: Cleve Leffler I | Total: $1697.00 | Items: 1 | Status: completed
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+═══════════════════════════════════════════════════════════
+PHASE 6: PERFORMANCE SUMMARY
+═══════════════════════════════════════════════════════════
+⏱️  Performance Metrics:
+   ⏱️  Data Generation Time: 70.748163938522s
+   ⏱️  Batch Execution Time: 2.262393951416s
+   ⏱️  Total Time: 73.010557889938s
+
+💾 Memory Usage:
+   📍 Baseline: 62.27 MB
+   📍 After Generation: 72.86 MB (+10.59 MB)
+   📍 After Batch Job: 62.45 MB (+0.18 MB)
+
+⚡ CPU Usage:
+   📍 Baseline: 0.17%
+   📍 Peak During Generation: 0.25%
+   📍 Peak During Batch: 0.11%
+
+═══════════════════════════════════════════════════════════
+CONCLUSION
+═══════════════════════════════════════════════════════════
+✅ Batch Processing Requirement 4 - VERIFIED
+
+📌 Key Findings:
+   ✓ Data generation using Factory: Works efficiently
+   ✓ Batch chunking (100 orders/batch): Implemented
+   ✓ Memory management: Controlled (chunking reduces peak memory)
+   ✓ Report generation: Complete with statistics
+   ✓ Logging: Tracks each batch processing step
+
+🎯 Evidence for Instructor:
+   📂 Report file: storage/app/reports/sales_report_2026-05-18.txt
+   📋 Logs: storage/logs/laravel.log
+   📊 Batch chunks: 0 chunks processed
+   📦 Total orders processed: 0
+
+╔════════════════════════════════════════════════════════════╗
+║ ✅ REQUIREMENT 4: BATCH PROCESSING - FULLY DOCUMENTED     ║
+╚════════════════════════════════════════════════════════════╝
+
+PS C:\projects\new\MY_STORE\my-ecommerce-app> 
+
+
+[2026-05-18 13:57:01] local.INFO: Starting Daily Sales Report generation. Total orders to process: 5500  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #1 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #2 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #3 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #4 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #5 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #6 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #7 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #8 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #9 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #10 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #11 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #12 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #13 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #14 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #15 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #16 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #17 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #18 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #19 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #20 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #21 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #22 | Orders in this batch: 100  
+[2026-05-18 13:57:01] local.INFO: Processing Sales Report Batch - Chunk #23 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #24 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #25 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #26 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #27 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #28 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #29 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #30 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #31 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #32 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #33 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #34 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #35 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #36 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #37 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #38 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #39 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #40 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #41 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #42 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #43 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #44 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #45 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #46 | Orders in this batch: 100  
+[2026-05-18 13:57:02] local.INFO: Processing Sales Report Batch - Chunk #47 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Processing Sales Report Batch - Chunk #48 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Processing Sales Report Batch - Chunk #49 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Processing Sales Report Batch - Chunk #50 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Processing Sales Report Batch - Chunk #51 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Processing Sales Report Batch - Chunk #52 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Processing Sales Report Batch - Chunk #53 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Processing Sales Report Batch - Chunk #54 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Processing Sales Report Batch - Chunk #55 | Orders in this batch: 100  
+[2026-05-18 13:57:03] local.INFO: Daily sales report generated successfully {"filename":"sales_report_2026-05-18.txt","generated_at":"2026-05-18 13:57:03"} 

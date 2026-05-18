@@ -1,0 +1,208 @@
+S C:\projects\new\MY_STORE\my-ecommerce-app> php scripts/batch_processing_demo.php 500 100 full
+
+╔════════════════════════════════════════════════════════════╗
+║  BATCH PROCESSING REQUIREMENT 4 - DOCUMENTATION TEST      ║
+╠════════════════════════════════════════════════════════════╣
+║ 📋 Test Parameters:                                        ║
+║    Orders to Generate: 500                              ║
+║    Chunk Size: 100                                       ║
+║    Expected Chunks: 5                                     ║
+║    Mode: full read                                  ║
+╚════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════
+PHASE 1: BASELINE RESOURCE SNAPSHOT
+═══════════════════════════════════════════════════════════
+
+╔════════════════════════════════════════════════════════════╗
+║ Baseline Resources (Before Data Generation)               ║
+╠════════════════════════════════════════════════════════════╣
+║ 🔴 PHP (Laravel)                                           ║
+║    Status: Running                                         ║
+║    CPU: 0%                                                ║
+║    RAM: 42.64 MB                                        ║
+║    Processes: 3                                            ║
+║                                                            ║
+║ 🟢 MySQL (Database)                                       ║
+║    Status: Running                                         ║
+║    CPU: 0%                                                ║
+║    RAM: 9.81 MB                                         ║
+║                                                            ║
+╠════════════════════════════════════════════════════════════╣
+║ 📊 TOTAL RESOURCES                                         ║
+║    CPU Total: 0%                                           ║
+║    RAM Total: 52.45 MB                                     ║
+║                                                            ║
+║    Status: ✅ NORMAL                                      ║
+║    Time: 2026-05-18 19:56:48                               ║
+╚════════════════════════════════════════════════════════════╝
+
+🧹 Clearing old log entries...
+
+═══════════════════════════════════════════════════════════
+PHASE 2: DATA GENERATION USING FACTORY
+═══════════════════════════════════════════════════════════
+⏱️  Starting data generation at 2026-05-18 19:56:53
+📦 Creating 500 orders with products and items...
+   ✓ Created 50 users
+   ✓ Created 50 products
+   📝 Generated 100 orders...
+   📝 Generated 200 orders...
+   📝 Generated 300 orders...
+   📝 Generated 400 orders...
+   📝 Generated 500 orders...
+
+✅ Data generation completed in 7.5702469348907s
+   📊 Orders in database: 905
+
+╔════════════════════════════════════════════════════════════╗
+║ Resources After Data Generation                           ║
+╠════════════════════════════════════════════════════════════╣
+║ 🔴 PHP (Laravel)                                           ║
+║    Status: Running                                         ║
+║    CPU: 1.83%                                             ║
+║    RAM: 48.67 MB                                        ║
+║    Processes: 3                                            ║
+║                                                            ║
+║ 🟢 MySQL (Database)                                       ║
+║    Status: Running                                         ║
+║    CPU: 3.01%                                             ║
+║    RAM: 21.48 MB                                        ║
+║                                                            ║
+╠════════════════════════════════════════════════════════════╣
+║ 📊 TOTAL RESOURCES                                         ║
+║    CPU Total: 4.84%                                        ║
+║    RAM Total: 70.15 MB                                     ║
+║                                                            ║
+║    Status: ✅ NORMAL                                      ║
+║    Time: 2026-05-18 19:57:04                               ║
+╚════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════
+PHASE 3: BATCH JOB EXECUTION (WITH CHUNKING LOGS)
+═══════════════════════════════════════════════════════════
+⏱️  Starting batch job execution at 2026-05-18 19:57:09
+🔄 Running GenerateDailySalesReportJob in full read mode...
+
+
+✅ Batch job completed in 0.32224202156067s
+
+╔════════════════════════════════════════════════════════════╗
+║ Resources After Batch Job                                 ║
+╠════════════════════════════════════════════════════════════╣
+║ 🔴 PHP (Laravel)                                           ║
+║    Status: Running                                         ║
+║    CPU: 0.48%                                             ║
+║    RAM: 55.2 MB                                         ║
+║    Processes: 3                                            ║
+║                                                            ║
+║ 🟢 MySQL (Database)                                       ║
+║    Status: Running                                         ║
+║    CPU: 0.1%                                              ║
+║    RAM: 22.42 MB                                        ║
+║                                                            ║
+╠════════════════════════════════════════════════════════════╣
+║ 📊 TOTAL RESOURCES                                         ║
+║    CPU Total: 0.58%                                        ║
+║    RAM Total: 77.62 MB                                     ║
+║                                                            ║
+║    Status: ✅ NORMAL                                      ║
+║    Time: 2026-05-18 19:57:14                               ║
+╚════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════
+PHASE 4: LOG ANALYSIS - CHUNKING VERIFICATION
+═══════════════════════════════════════════════════════════
+📂 Analyzing logs for chunk processing evidence...
+
+⚠️  No chunking logs found. Check storage/logs/laravel.log
+
+═══════════════════════════════════════════════════════════
+PHASE 5: REPORT VERIFICATION
+═══════════════════════════════════════════════════════════
+✅ Report file created successfully:
+   📄 Path: app/reports/sales_report_2026-05-18.txt
+   📊 File size: 80.84 KB
+
+📋 Report Preview (first 30 lines):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ===============================================
+   DAILY SALES REPORT
+   Date: 2026-05-18
+   Generated: 2026-05-18 19:57:09
+   ===============================================
+   
+   SUMMARY STATISTICS:
+   Total Orders: 905
+   Total Sales: $2258379.00
+   Average Order Value: $2,495.45
+   ===============================================
+   
+   DETAILED ORDERS (Processed in Single Full Read):
+   -----------------------------------------------
+   
+   Batch #1 (Full Read):
+   Order ID: 859 | Customer: Damion Beahan | Total: $1028.00 | Items: 1 | Status: completed
+   Order ID: 860 | Customer: Dr. Vito Medhurst I | Total: $156.00 | Items: 1 | Status: completed
+   Order ID: 861 | Customer: Ms. Lavina Nolan | Total: $489.00 | Items: 1 | Status: completed
+   Order ID: 862 | Customer: Alanna Kemmer PhD | Total: $3717.00 | Items: 1 | Status: completed
+   Order ID: 863 | Customer: Leora Schiller | Total: $4730.00 | Items: 1 | Status: completed
+   Order ID: 864 | Customer: Caleb Mayert | Total: $4082.00 | Items: 1 | Status: completed
+   Order ID: 865 | Customer: Ivah Pagac | Total: $253.00 | Items: 1 | Status: completed
+   Order ID: 866 | Customer: Ms. Rosalinda Hirthe | Total: $3615.00 | Items: 1 | Status: completed
+   Order ID: 867 | Customer: Trisha Hauck | Total: $533.00 | Items: 1 | Status: completed
+   Order ID: 868 | Customer: Laila Kling | Total: $4265.00 | Items: 1 | Status: completed
+   Order ID: 869 | Customer: Marisol Carroll | Total: $1296.00 | Items: 1 | Status: completed
+   Order ID: 870 | Customer: Winfield Bosco | Total: $2379.00 | Items: 1 | Status: completed
+   Order ID: 871 | Customer: Dr. Vito Medhurst I | Total: $3702.00 | Items: 1 | Status: completed
+   Order ID: 872 | Customer: Emilie Rogahn | Total: $858.00 | Items: 1 | Status: completed
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+═══════════════════════════════════════════════════════════
+PHASE 6: PERFORMANCE SUMMARY
+═══════════════════════════════════════════════════════════
+⏱️  Performance Metrics:
+   ⏱️  Data Generation Time: 7.5702469348907s
+   ⏱️  Batch Execution Time: 0.32224202156067s
+   ⏱️  Total Time: 7.8924889564514s
+
+💾 Memory Usage:
+   📍 Baseline: 52.46 MB
+   📍 After Generation: 70.2 MB (+17.74 MB)
+   📍 After Batch Job: 77.64 MB (+25.18 MB)
+
+⚡ CPU Usage:
+   📍 Baseline: 0.15%
+   📍 Peak During Generation: 0.15%
+   📍 Peak During Batch: 0.12%
+
+═══════════════════════════════════════════════════════════
+CONCLUSION
+═══════════════════════════════════════════════════════════
+✅ Batch Processing Requirement 4 - VERIFIED
+
+📌 Key Findings:
+   ✓ Data generation using Factory: Works efficiently
+   ✓ Batch processing mode: full read for comparison
+   ✓ Memory management: Controlled (chunking reduces peak memory)
+   ✓ Report generation: Complete with statistics
+   ✓ Logging: Tracks each batch processing step
+   ⚠️  Comparison mode: full read intentionally loads all orders for the demo
+
+🎯 Evidence for Instructor:
+   📂 Report file: storage/app/reports/sales_report_2026-05-18.txt
+   📋 Logs: storage/logs/laravel.log
+   📊 Batch chunks: 0 chunks processed
+   📦 Total orders processed: 0
+
+╔════════════════════════════════════════════════════════════╗
+║ ✅ REQUIREMENT 4: BATCH PROCESSING - FULLY DOCUMENTED     ║
+╚════════════════════════════════════════════════════════════╝
+
+PS C:\projects\new\MY_STORE\my-ecommerce-app> 
+[2026-05-18 19:57:09] local.INFO: Starting Daily Sales Report generation. Total orders to process: 905  
+[2026-05-18 19:57:09] local.INFO: Processing Sales Report Batch - Full Read | Orders in this batch: 905  
+[2026-05-18 19:57:09] local.INFO: Daily sales report generated successfully {"filename":"sales_report_2026-05-18.txt","generated_at":"2026-05-18 19:57:09"} 
+

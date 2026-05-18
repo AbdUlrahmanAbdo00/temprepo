@@ -1,0 +1,57 @@
+PS C:\projects\new\MY_STORE\my-ecommerce-app> k6 run scripts/k6_solution2_light_load_test.js --env LOAD_PROFILE=light                   
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: scripts/k6_solution2_light_load_test.js
+        output: -
+
+     scenarios: (100.00%) 4 scenarios, 77 max VUs, 40s max duration (incl. graceful stop):
+              * auth_light: 2.00 iterations/s for 10s (maxVUs: 5-20, exec: authScenario, gracefulStop: 30s)
+              * cart_light: 3.00 iterations/s for 10s (maxVUs: 5-20, exec: cartScenario, gracefulStop: 30s)
+              * checkout_light: 1.00 iterations/s for 10s (maxVUs: 3-12, exec: checkoutScenario, gracefulStop: 30s)
+              * product_read_light: 4.00 iterations/s for 10s (maxVUs: 5-25, exec: productScenario, gracefulStop: 30s)
+
+
+Performance interpretation
+-------------------------
+Threshold interpretation:
+- No explicit threshold failures were found in the summary payload.
+- If k6 prints an ERRO line, the run still exceeded one or more thresholds or hit a script exception.
+- For this light profile, the main goal is to keep latency under control while still producing measurable load.
+
+Why the run stopped with ERRO:
+- k6 exits with a non-zero status when thresholds are crossed or the script raises an exception.
+- This light script keeps the same coverage as the old one, but with much lower pressure on the server.
+
+running (11.4s), 00/18 VUs, 102 complete and 0 interrupted iterations
+auth_light         ✓ [======================================] 00/05 VUs  10s  2.00 iters/s
+cart_light         ✓ [======================================] 00/05 VUs  10s  3.00 iters/s
+checkout_light     ✓ [======================================] 00/03 VUs  10s  1.00 iters/s
+product_read_light ✓ [======================================] 00/05 VUs  10s  4.00 iters/s
+PS C:\projects\new\MY_STORE\my-ecommerce-app> 
+
+
+
+PS C:\projects\new\MY_STORE\my-ecommerce-app> php scripts/project_resource_monitor.php --duration=40 --interval=1
+
+╔════════════════════════════════════════════════════════════╗
+║        PROJECT RESOURCE MONITOR - K6 TIMED RUN            ║
+╠════════════════════════════════════════════════════════════╣
+║ Duration: 40 seconds                                     ║
+║ Interval: 1 seconds                                       ║
+║ Samples: 11                                                ║
+║ Avg CPU: 6.25%                                           ║
+║ Max CPU: 22.21%                                          ║
+║ Avg RAM: 488.08 MB                                     ║
+║ Max RAM: 493.35 MB                                     ║
+║                                                            ║
+║ Last Updated: 2026-05-18 13:14:03                       ║
+╚════════════════════════════════════════════════════════════╝
+
+PS C:\projects\new\MY_STORE\my-ecommerce-app> 

@@ -1,0 +1,108 @@
+PS C:\projects\new\MY_STORE\my-ecommerce-app> k6 run scripts/k6_solution2_load_test.js --env LOAD_PROFILE=moderate
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: scripts/k6_solution2_load_test.js
+        output: -
+
+     scenarios: (100.00%) 4 scenarios, 230 max VUs, 40s max duration (incl. graceful stop):
+              * auth_throttle: 25.00 iterations/s for 10s (maxVUs: 10-50, exec: authThrottleScenario, gracefulStop: 30s)
+              * cart_throttle: 40.00 iterations/s for 10s (maxVUs: 10-50, exec: cartThrottleScenario, gracefulStop: 30s)
+              * checkout_throttle: 15.00 iterations/s for 10s (maxVUs: 10-30, exec: checkoutThrottleScenario, gracefulStop: 30s)
+              * product_read_pressure: 60.00 iterations/s for 10s (maxVUs: 20-100, exec: productReadPressureScenario, gracefulStop: 30s)
+
+WARN[0008] Insufficient VUs, reached 30 active VUs and cannot initialize more  executor=constant-arrival-rate scenario=checkout_throttle
+ERRO[0018] TypeError: Object has no member 'some'
+running at file:///C:/projects/new/MY_STORE/my-ecommerce-app/scripts/k6_solution2_load_test.js:490:73(17)
+cart_thrat filter (native)
+checkoutat formatThresholdInterpretation (file:///C:/projects/new/MY_STORE/my-ecommerce-app/scripts/k6_solution2_load_test.js:488:45(20))
+        at handleSummary (file:///C:/projects/new/MY_STORE/my-ecommerce-app/scripts/k6_solution2_load_test.js:554:34(22))  hint="script exception"
+
+
+  █ THRESHOLDS 
+
+    http_req_duration
+    ✗ 'p(95)<1500' p(95)=12.12s
+
+      {area:auth}
+      ✗ 'p(95)<1000' p(95)=12.95s
+
+      {area:cart}
+      ✗ 'p(95)<1200' p(95)=10.78s
+
+      {area:checkout}
+      ✗ 'p(95)<1500' p(95)=13.71s
+
+      {area:products}
+      ✗ 'p(95)<1200' p(95)=10.79s
+
+    http_req_failed
+    ✗ 'rate<0.10' rate=27.69%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 211     11.363971/s
+    checks_succeeded...: 100.00% 211 out of 211
+    checks_failed......: 0.00%   0 out of 211
+
+    ✓ products endpoint responded
+    ✓ checkout endpoint responded
+    ✓ login endpoint responded
+    ✓ cart endpoint responded
+
+    HTTP
+    http_req_duration..............: avg=7.4s  min=576.53ms med=7.22s max=14.4s  p(90)=10.84s p(95)=12.12s
+      { area:auth }................: avg=8.18s min=4.02s    med=7.83s max=14.11s p(90)=10.85s p(95)=12.95s
+      { area:cart }................: avg=7.32s min=3.72s    med=7.3s  max=12.93s p(90)=10.35s p(95)=10.78s
+      { area:checkout }............: avg=8.49s min=3.07s    med=8.56s max=14.4s  p(90)=12.97s p(95)=13.71s
+      { area:products }............: avg=6.59s min=2.69s    med=6.03s max=12s    p(90)=9.44s  p(95)=10.79s
+      { expected_response:true }...: avg=7.17s min=576.53ms med=6.5s  max=14.11s p(90)=10.34s p(95)=11.03s
+    http_req_failed................: 27.69% 59 out of 213
+    http_reqs......................: 213    11.471686/s
+
+    EXECUTION
+    dropped_iterations.............: 1092   58.812589/s
+    iteration_duration.............: avg=7.58s min=2.7s     med=7.28s max=14.4s  p(90)=10.86s p(95)=12.19s
+    iterations.....................: 211    11.363971/s
+    vus............................: 63     min=0         max=148
+    vus_max........................: 158    min=50        max=158
+
+    NETWORK
+    data_received..................: 647 kB 35 kB/s
+    data_sent......................: 56 kB  3.0 kB/s
+
+
+
+
+running (18.6s), 000/158 VUs, 211 complete and 0 interrupted iterations
+auth_throttle         ✓ [====================================] 00/42 VUs    10s  25.00 iters/s
+cart_throttle         ✓ [====================================] 00/37 VUs    10s  40.00 iters/s
+checkout_throttle     ✓ [====================================] 00/30 VUs    10s  15.00 iters/s
+product_read_pressure ✓ [====================================] 000/049 VUs  10s  60.00 iters/s
+ERRO[0019] thresholds on metrics 'http_req_duration, http_req_duration{area:auth}, http_req_duration{area:cart}, http_req_duration{area:checkout}, http_req_duration{area:products}, http_req_failed' have been crossed 
+PS C:\projects\new\MY_STORE\my-ecommerce-app> 
+
+
+
+PS C:\projects\new\MY_STORE\my-ecommerce-app> php scripts/project_resource_monitor.php --duration=90 --interval=1
+
+╔════════════════════════════════════════════════════════════╗
+║        PROJECT RESOURCE MONITOR - K6 TIMED RUN            ║
+╠════════════════════════════════════════════════════════════╣
+║ Duration: 90 seconds                                     ║
+║ Interval: 1 seconds                                       ║
+║ Samples: 18                                                ║
+║ Avg CPU: 3.26%                                           ║
+║ Max CPU: 52.58%                                          ║
+║ Avg RAM: 1423.31 MB                                    ║
+║ Max RAM: 1844.01 MB                                    ║
+║                                                            ║
+║ Last Updated: 2026-05-18 12:59:09                       ║
+╚════════════════════════════════════════════════════════════╝
