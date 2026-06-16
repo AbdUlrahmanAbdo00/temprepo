@@ -25,14 +25,18 @@ class ProductController extends Controller
      */
     public function index(): JsonResponse
     {
-        // Cache the full product listing for 5 minutes (Req 6 — Distributed Caching)
-        $products = Cache::remember('products:all', now()->addMinutes(5), function () {
-            return Product::query()->latest()->get();
+        // Paginate to keep each response small — fixes the large-payload bottleneck (Req 10).
+        // Each page is cached independently with a short TTL (Req 6 — distributed caching).
+        // No active invalidation of the listing: it is display-only, and the authoritative
+        // stock check happens at checkout via an atomic decrement on the DB (Req 1),
+        // so a few seconds of listing staleness can never cause overselling.
+        $page = request()->integer('page', 1);
+
+        $products = Cache::remember("products:page:{$page}", now()->addMinutes(5), function () {
+            return Product::query()->latest()->paginate(20);
         });
 
-        return response()->json([
-            'data' => $products,
-        ]);
+        return response()->json($products);
     }
 
     /**
@@ -46,7 +50,7 @@ class ProductController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        // Cache individual product for 10 minutes (Req 6 — Distributed Caching)
+        // Single query on cache miss — keep the cached path as light as possible (Req 6)
         $product = Cache::remember("product:{$id}", now()->addMinutes(10), function () use ($id) {
             return Product::findOrFail($id);
         });

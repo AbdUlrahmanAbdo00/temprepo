@@ -1,0 +1,91 @@
+
+╔══════════════════════════════════════════════════════════════╗
+║   DISTRIBUTED CACHING — REQUIREMENT 6 — BENCHMARK DEMO     ║
+╠══════════════════════════════════════════════════════════════╣
+║  Cache Driver (production) : Redis (predis)                 ║
+║  Pattern                   : Cache-Aside (remember/forget)  ║
+║  Requests per phase        : 50                             ║
+║  Products in DB            : 4505                           ║
+╚══════════════════════════════════════════════════════════════╝
+
+══════════════════════════════════════════════════════════════
+  PHASE 1: SETUP — SEED PRODUCTS
+══════════════════════════════════════════════════════════════
+   ✓ Using 4505 existing products
+   ✓ Cache cleared — starting with cold state
+
+══════════════════════════════════════════════════════════════
+  PHASE 2: COLD — 50 REQUESTS WITHOUT CACHE
+══════════════════════════════════════════════════════════════
+   Every request goes directly to the database.
+
+   Running...
+   ↳ 10/50 done
+   ↳ 20/50 done
+   ↳ 30/50 done
+   ↳ 40/50 done
+   ↳ 50/50 done
+
+   Results (NO Cache):
+──────────────────────────────────────────────────────────────
+   Listing  — avg response time:        5.677 ms
+   Listing  — total DB queries  (50 req): 100
+   Product  — avg response time:        1.083 ms
+   Product  — total DB queries  (50 req): 50
+──────────────────────────────────────────────────────────────
+══════════════════════════════════════════════════════════════
+  PHASE 3: WARM — 50 REQUESTS WITH REDIS CACHE
+══════════════════════════════════════════════════════════════
+   First request per key hits DB; all subsequent requests hit Cache.
+
+   Running...
+   ↳ 10/50 done
+   ↳ 20/50 done
+   ↳ 30/50 done
+   ↳ 40/50 done
+   ↳ 50/50 done
+
+   Results (WITH Cache):
+──────────────────────────────────────────────────────────────
+   Listing  — avg response time:        1.015 ms
+   Listing  — total DB queries  (50 req): 2
+   Product  — avg response time:        0.6 ms
+   Product  — total DB queries  (50 req): 5
+   Cache HITs  (listing + product):       94
+   Cache MISSes (listing + product):      6
+──────────────────────────────────────────────────────────────
+══════════════════════════════════════════════════════════════
+  PHASE 4: CACHE INVALIDATION — SIMULATE CHECKOUT
+══════════════════════════════════════════════════════════════
+   Before checkout:
+   ✓ product:26       cached: YES
+
+   After checkout (Cache::forget on product:26):
+   ✓ product:26       cached: NO  ✓ evicted
+
+   After next request (re-populated from fresh DB):
+   ✓ product:26       cached: YES ✓
+
+══════════════════════════════════════════════════════════════
+  PHASE 5: BEFORE vs AFTER — PERFORMANCE SUMMARY
+══════════════════════════════════════════════════════════════
+
+   Metric                       Without Cache  With Cache     Improvement
+──────────────────────────────────────────────────────────────
+   Listing avg (ms)             5.677          1.015          5.6× faster
+   Product avg (ms)             1.083          0.6            1.8× faster
+   Listing DB queries (50 req)  100            2              98 queries saved
+   Product DB queries (50 req)  50             5              45 queries saved
+   Total DB queries saved       150            7              95% reduction
+──────────────────────────────────────────────────────────────
+
+╔══════════════════════════════════════════════════════════════╗
+║  ✅ REQUIREMENT 6: DISTRIBUTED CACHING — FULLY VERIFIED    ║
+╠══════════════════════════════════════════════════════════════╣
+║  DB queries reduced by 95%  (143 of 150 saved)              ║
+║  Cache HITs / MISSes   94 HITs / 6 MISSes                   ║
+║  Cache invalidation on checkout          VERIFIED ✓        ║
+║  predis/predis installed                 VERIFIED ✓        ║
+║  CACHE_DRIVER=redis in .env              VERIFIED ✓        ║
+╚══════════════════════════════════════════════════════════════╝
+

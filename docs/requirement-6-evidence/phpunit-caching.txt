@@ -1,0 +1,16 @@
+
+   PASS  Tests\Feature\CachingVerificationTest
+  ✓ redis is configured as production cache driver                                                               0.47s  
+  ✓ predis package is installed                                                                                  0.03s  
+  ✓ product listing cache miss then hit                                                                          0.19s  
+  ✓ product listing second request does not hit db                                                               0.04s  
+  ✓ db queries reduced with warm cache                                                                           0.06s  
+  ✓ individual product cache miss then hit                                                                       0.03s  
+  ✓ individual product second request does not hit db                                                            0.04s  
+  ✓ cached product data matches database                                                                         0.06s  
+  ✓ checkout invalidates product cache                                                                           0.17s  
+  ✓ cache is repopulated after invalidation                                                                      0.06s  
+
+  Tests:    10 passed (33 assertions)
+  Duration: 1.62s
+

@@ -58,7 +58,7 @@ function fetchListingNocache(): array
 {
     $t0 = microtime(true);
     DB::enableQueryLog();
-    $data = Product::query()->latest()->get();
+    $data = Product::query()->latest()->paginate(20);
     $queries = count(array_filter(
         DB::getQueryLog(),
         fn ($q) => stripos($q['query'], 'from `products`') !== false
@@ -75,8 +75,8 @@ function fetchListingCached(): array
 {
     $t0 = microtime(true);
     DB::enableQueryLog();
-    Cache::remember('products:all', now()->addMinutes(5), function () {
-        return Product::query()->latest()->get();
+    Cache::remember('products:page:1', now()->addMinutes(5), function () {
+        return Product::query()->latest()->paginate(20);
     });
     $queries = count(array_filter(
         DB::getQueryLog(),
@@ -137,7 +137,7 @@ echo "╚═══════════════════════�
 // ─── PHASE 1: Setup ───────────────────────────────────────────────────────────
 section("PHASE 1: SETUP — SEED PRODUCTS");
 
-Cache::forget('products:all');
+Cache::forget('products:page:1');
 
 $existing = Product::count();
 $needed   = max(0, $productCount - $existing);
@@ -196,7 +196,7 @@ line();
 section("PHASE 3: WARM — {$requests} REQUESTS WITH REDIS CACHE");
 echo "   First request per key hits DB; all subsequent requests hit Cache.\n\n";
 
-Cache::forget('products:all');
+Cache::forget('products:page:1');
 foreach ($sampleIds as $sid) {
     Cache::forget("product:{$sid}");
 }
@@ -209,7 +209,7 @@ $cacheMisses = 0;
 echo "   Running...\n";
 
 for ($i = 1; $i <= $requests; $i++) {
-    $hitBefore = Cache::has('products:all');
+    $hitBefore = Cache::has('products:page:1');
     $r = fetchListingCached();
     if ($hitBefore) {
         $cacheHits++;
@@ -253,26 +253,23 @@ line();
 // ─── PHASE 4: Cache Invalidation ─────────────────────────────────────────────
 section("PHASE 4: CACHE INVALIDATION — SIMULATE CHECKOUT");
 
-// Warm up
-Cache::remember('products:all', now()->addMinutes(5), fn () => Product::query()->latest()->get());
+// Warm up the individual product cache
 Cache::remember("product:{$sampleId}", now()->addMinutes(10), fn () => Product::findOrFail($sampleId));
 
 echo "   Before checkout:\n";
-echo "   ✓ products:all   cached: " . (Cache::has('products:all')           ? 'YES' : 'NO') . "\n";
 echo "   ✓ product:{$sampleId}       cached: " . (Cache::has("product:{$sampleId}") ? 'YES' : 'NO') . "\n\n";
 
-// Simulate CheckoutService cache invalidation
+// Simulate CheckoutService: only the individual product key is evicted.
+// The paginated listing is display-only and relies on its short TTL (not invalidated here).
 Cache::forget("product:{$sampleId}");
-Cache::forget('products:all');
 
-echo "   After checkout (Cache::forget called):\n";
-echo "   ✓ products:all   cached: " . (Cache::has('products:all')           ? 'YES ← ERROR' : 'NO  ✓ evicted') . "\n";
+echo "   After checkout (Cache::forget on product:{$sampleId}):\n";
 echo "   ✓ product:{$sampleId}       cached: " . (Cache::has("product:{$sampleId}") ? 'YES ← ERROR' : 'NO  ✓ evicted') . "\n\n";
 
-// Re-populate
-Cache::remember('products:all', now()->addMinutes(5), fn () => Product::query()->latest()->get());
+// Re-populate from fresh DB on the next read
+Cache::remember("product:{$sampleId}", now()->addMinutes(10), fn () => Product::findOrFail($sampleId));
 echo "   After next request (re-populated from fresh DB):\n";
-echo "   ✓ products:all   cached: " . (Cache::has('products:all') ? 'YES ✓' : 'NO ← ERROR') . "\n\n";
+echo "   ✓ product:{$sampleId}       cached: " . (Cache::has("product:{$sampleId}") ? 'YES ✓' : 'NO ← ERROR') . "\n\n";
 
 // ─── PHASE 5: Summary ─────────────────────────────────────────────────────────
 section("PHASE 5: BEFORE vs AFTER — PERFORMANCE SUMMARY");
