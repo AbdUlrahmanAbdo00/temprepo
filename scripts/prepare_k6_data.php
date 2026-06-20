@@ -14,26 +14,20 @@ use App\Models\User;
 $userCount = max(1, (int) ($argv[1] ?? 10));
 $defaultPassword = $argv[2] ?? 'password123';
 $productStock = max(100, (int) ($argv[3] ?? 1000));
-$outputFile = $argv[4] ?? storage_path('app/k6-auth-data.json');
+$productCount = max(1, (int) ($argv[4] ?? 200));
+$outputFile = $argv[5] ?? storage_path('app/k6-auth-data.json');
 
-$productSeeds = [
-    ['name' => 'k6 electronics', 'price' => 299.99, 'description' => 'Electronics benchmark product.'],
-    ['name' => 'k6 fashion', 'price' => 79.50, 'description' => 'Fashion benchmark product.'],
-    ['name' => 'k6 home', 'price' => 45.25, 'description' => 'Home benchmark product.'],
-    ['name' => 'k6 sports', 'price' => 120.00, 'description' => 'Sports benchmark product.'],
-    ['name' => 'k6 books', 'price' => 25.00, 'description' => 'Books benchmark product.'],
-    ['name' => 'k6 grocery', 'price' => 15.75, 'description' => 'Grocery benchmark product.'],
-];
-
+// Generate many products with HIGH stock so 100 VUs spread across them — this
+// removes the artificial lock contention that 6 products caused (Req 9 realism).
 $products = [];
 
-foreach ($productSeeds as $seed) {
+for ($i = 1; $i <= $productCount; $i++) {
     $product = Product::query()->updateOrCreate(
-        ['name' => $seed['name']],
+        ['name' => "k6 product {$i}"],
         [
-            'price' => $seed['price'],
+            'price' => 50 + ($i % 50) * 5,
             'stock' => $productStock,
-            'description' => $seed['description'],
+            'description' => "k6 stress-test product #{$i}.",
         ]
     );
 

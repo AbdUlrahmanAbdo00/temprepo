@@ -39,6 +39,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \App\Http\Middleware\MeasureProcessingTime::class,   // Req 9/10 instrumentation (X-Process-Time-Ms)
+            \App\Http\Middleware\ProfileDbQueries::class,        // Req 10 instrumentation (X-Q-Count/Total/Max)
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
