@@ -49,7 +49,7 @@ class CheckoutService
         try {
             foreach ($productIds as $lockProductId) {
                 $lock = Cache::lock("lock:product:{$lockProductId}", 10);
-                $lock->block(5);
+                $lock->block(7);
                 $locks[] = $lock;
             }
         } catch (LockTimeoutException $exception) {
