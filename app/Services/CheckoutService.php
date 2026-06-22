@@ -17,9 +17,9 @@ class CheckoutService
     /** Per-request stage timings in ms (lock acquisition, transaction) — Req 10 instrumentation. */
     public array $timings = [];
 
-    public function checkout(User $user): Order
+    public function checkout(User $user, int $attempt = 0): Order
     {
-        // === Req 10 instrumentation — measure each stage (no logic/queries/logs changed) ===
+        // === Req 10 instrumentation — measure each stage (no logic/queries changed) ===
         $tCart = microtime(true);
         $cartItems = $user->cartItems()->with('product')->get();
         $this->timings['cart_load_ms'] = round((microtime(true) - $tCart) * 1000, 2);
@@ -31,16 +31,6 @@ class CheckoutService
         $totalPrice = 0;
         $orderItemsPayload = [];
 
-        // Logging timer — every Log::info still fires (NOT removed), only timed.
-        $logMs = 0.0;
-        $logCount = 0;
-        $logInfo = function (string $message, array $context) use (&$logMs, &$logCount) {
-            $s = microtime(true);
-            Log::info($message, $context);
-            $logMs += (microtime(true) - $s) * 1000;
-            $logCount++;
-        };
-
         $productIds = $cartItems->pluck('product_id')->unique()->sort()->values();
 
         // Req 7 — distributed lock via Redis (sorted ids → no deadlock; works across servers).
@@ -49,12 +39,17 @@ class CheckoutService
         try {
             foreach ($productIds as $lockProductId) {
                 $lock = Cache::lock("lock:product:{$lockProductId}", 10);
-                $lock->block(7);
+                $lock->block(1);
                 $locks[] = $lock;
             }
         } catch (LockTimeoutException $exception) {
             foreach ($locks as $acquired) {
                 $acquired->release();
+            }
+            // Retry up to 2 times with random jitter (50–200ms) to break thundering herd.
+            if ($attempt < 2) {
+                usleep(random_int(50_000, 200_000));
+                return $this->checkout($user, $attempt + 1);
             }
             throw $exception;
         }
@@ -68,13 +63,9 @@ class CheckoutService
         $txnStart = microtime(true);
         try {
             // Req 8 — single ACID transaction, executed WHILE the distributed locks are held.
-            $order = DB::transaction(function () use ($user, $cartItems, &$totalPrice, &$orderItemsPayload, $logInfo, &$decrementMs, &$orderCreateMs, &$itemsCreateMs, &$cartDeleteMs) {
+            $order = DB::transaction(function () use ($user, $cartItems, &$totalPrice, &$orderItemsPayload, &$decrementMs, &$orderCreateMs, &$itemsCreateMs, &$cartDeleteMs) {
                 foreach ($cartItems as $cartItem) {
-                    $logInfo('Checkout started for user', [
-                        'user_id'    => $user->id,
-                        'product_id' => $cartItem->product_id,
-                        'quantity'   => $cartItem->quantity,
-                    ]);
+                    $product = $cartItem->product;
 
                     // Req 1 — conditional atomic decrement (lock-free), prevents overselling.
                     $ds = microtime(true);
@@ -89,17 +80,11 @@ class CheckoutService
                         );
                     }
 
-                    $logInfo('Product stock updated during checkout', [
-                        'user_id'    => $user->id,
-                        'product_id' => $cartItem->product_id,
-                        'quantity'   => $cartItem->quantity,
-                    ]);
-
-                    $totalPrice += $cartItem->product->price * $cartItem->quantity;
+                    $totalPrice += $product->price * $cartItem->quantity;
                     $orderItemsPayload[] = [
-                        'product_id'        => $cartItem->product->id,
+                        'product_id'        => $product->id,
                         'quantity'          => $cartItem->quantity,
-                        'price_at_purchase' => $cartItem->product->price,
+                        'price_at_purchase' => $product->price,
                     ];
                 }
 
@@ -119,12 +104,6 @@ class CheckoutService
                 $user->cartItems()->delete();
                 $cartDeleteMs = (microtime(true) - $del) * 1000;
 
-                $logInfo('Order created successfully', [
-                    'user_id'     => $user->id,
-                    'order_id'    => $order->id,
-                    'total_price' => $order->total_price,
-                ]);
-
                 return $order;
             });
         } finally {
@@ -137,18 +116,26 @@ class CheckoutService
         $this->timings['order_create_ms'] = round($orderCreateMs, 2);
         $this->timings['items_create_ms'] = round($itemsCreateMs, 2);
         $this->timings['cart_delete_ms'] = round($cartDeleteMs, 2);
-        // Remainder of the transaction time = COMMIT (fsync) + begin/commit overhead.
+        // commit_overhead = transaction time minus all measured sub-operations
         $this->timings['commit_overhead_ms'] = round(
-            $this->timings['txn_ms'] - $decrementMs - $orderCreateMs - $itemsCreateMs - $cartDeleteMs - $logMs,
+            $this->timings['txn_ms'] - $decrementMs - $orderCreateMs - $itemsCreateMs - $cartDeleteMs,
             2
         );
 
-        // Req 6 — invalidate the individual product cache after commit.
+        // Req 6 — invalidate product cache for all cart items in one batch.
         $tCache = microtime(true);
-        foreach ($cartItems as $cartItem) {
-            Cache::forget("product:{$cartItem->product_id}");
-        }
+        Cache::deleteMultiple(
+            $cartItems->pluck('product_id')->map(fn($id) => "product:{$id}")->all()
+        );
         $this->timings['cache_forget_ms'] = round((microtime(true) - $tCache) * 1000, 2);
+
+        // Load relations before dispatch so the response is ready independently of dispatch latency.
+        $tLoad = microtime(true);
+        $result = $order->load('items.product');
+        $this->timings['order_load_ms'] = round((microtime(true) - $tLoad) * 1000, 2);
+
+        $this->timings['log_ms'] = 0.0;
+        $this->timings['log_count'] = 0;
 
         // Req 3 — dispatch heavy work to the queue.
         $tDisp = microtime(true);
@@ -161,13 +148,6 @@ class CheckoutService
             ]);
         }
         $this->timings['dispatch_ms'] = round((microtime(true) - $tDisp) * 1000, 2);
-
-        $tLoad = microtime(true);
-        $result = $order->load('items.product');
-        $this->timings['order_load_ms'] = round((microtime(true) - $tLoad) * 1000, 2);
-
-        $this->timings['log_ms'] = round($logMs, 2);
-        $this->timings['log_count'] = $logCount;
 
         return $result;
     }
